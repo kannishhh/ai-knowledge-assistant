@@ -1,5 +1,5 @@
 from services.vector_store import get_vectorstore
-from services.llm import ask_llm, stream_llm
+from services.llm import ask_llm
 import time
 import re
 
@@ -11,6 +11,8 @@ MAX_CONTEXT_CHARS = 1800
 MAX_PROMPT_CHARS = 3200
 SOURCE_EXCERPT_CHARS = 220
 LLM_TIMEOUT_S = 20
+
+vectorstore = get_vectorstore()
 
 
 def _normalize_text(text: str) -> str:
@@ -28,7 +30,6 @@ def _build_prompt(query: str, context: str) -> str:
 
 
 def _prepare_rag_input(query: str):
-    vectorstore = get_vectorstore()
 
     t0 = time.time()
     docs_with_scores = vectorstore.similarity_search_with_score(query, k=SEARCH_K)
